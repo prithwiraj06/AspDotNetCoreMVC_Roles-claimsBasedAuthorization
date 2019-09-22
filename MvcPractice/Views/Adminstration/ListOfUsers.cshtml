@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewBag.Title = "List of users";
+}
+@if (Model.Any())
+{
+    <h2>All users</h2>
+    <a asp-controller="Accounts" asp-action="Register" class="btn btn-primary" style="width:auto">Add new user</a>
+    @foreach(var user in Model)
+    {
+        <div class="card mb-3 mt-2">
+            <div class="card-header">
+                User Id: @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@user.UserName</h5>
+            </div>
+            <div class="card-footer">
+                <form asp-controller="Adminstration" asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
+                    <a class="btn btn-primary" asp-controller="Adminstration" asp-action="EditUser" asp-route-id="@user.Id" style="width:auto">Edit</a>
+                    <span id="confirmDeleteSpan_@user.Id" style="display:none">
+                        <span>Are you sure want to delete</span>
+                        <button class="btn btn-danger" style="width:auto">Yes</button>
+                        <a href="#" class="btn btn-primary" style="width:auto" onclick="confirmDelete('@user.Id', false)">No</a>
+                    </span>
+                    <span id="deleteSpan_@user.Id">
+                        <a href="#" class="btn btn-danger" style="width:auto" onclick="confirmDelete('@user.Id', true)">Delete</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No users
+        </div>
+        <div class="card-body">
+            <h5>Use the button below to add new user</h5>
+            <a asp-controller="Accounts" asp-action="Register" class="btn btn-primary" style="width:auto">Add new user</a>
+        </div>
+    </div>
+}
+@section Scripts{ 
+    <script src="~/Scripts/CustomScript.js"></script>
+}
